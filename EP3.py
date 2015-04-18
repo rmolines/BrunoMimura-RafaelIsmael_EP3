@@ -6,12 +6,19 @@ Created on Sat Apr 18 18:08:37 2015
 """
 
 ""
-alimentos = open ("alimentos.csv", encoding = "latin1")
+from datetime import *
+d3 = datetime.strptime('13/02/2015', '%d/%m/%Y')
 
-tabela = alimentos.readlines()
+alimentos = open ("alimentos.csv", encoding = "latin-1")
+
+tabela = {}
 
 
-usuario = open ("usuario.csv", encoding = "utf-8")
+for i in alimentos.readlines():
+    x = i.strip ().split (",")
+    tabela [x[0]] = x[1:]    
+
+usuario = open ("usuario.csv", encoding = "latin-1")
 
 u = usuario.readlines ()
 
@@ -22,9 +29,10 @@ idade = info [1]
 peso = info [2]
 sexo = info [3]
 altura = info [4]
-metabolismo = info [5]
+atividade = info [5]
 
 alimentacao = u [3:]
+
 
 dias = {}
 
@@ -41,8 +49,11 @@ for i in alimentacao:
             dias[dia][comida] += qtd
         else:
             dias [dia][comida] = qtd
-        
-        
-        
 
-print (dias)
+calorias = []
+
+for i in dias:
+    calorias.append  (datetime.strptime(i, "%d/%m/%y"))
+    
+
+print (sorted (calorias))
