@@ -6,9 +6,6 @@ Created on Sat Apr 18 18:08:37 2015
 """
 
 ""
-from datetime import *
-d3 = datetime.strptime('13/02/2015', '%d/%m/%Y')
-
 alimentos = open ("alimentos.csv", encoding = "latin-1")
 
 tabela = {}
@@ -16,7 +13,7 @@ tabela = {}
 
 for i in alimentos.readlines():
     x = i.strip ().split (",")
-    tabela [x[0]] = x[1:]    
+    tabela [x[0]] = x[1:]   
 
 usuario = open ("usuario.csv", encoding = "latin-1")
 
@@ -50,10 +47,11 @@ for i in alimentacao:
         else:
             dias [dia][comida] = qtd
 
-calorias = []
+calorias = {}
 
-for i in dias:
-    calorias.append  (datetime.strptime(i, "%d/%m/%y"))
-    
-
-print (sorted (calorias))
+for i in sorted(dias):
+    calorias[i] = 0
+    for a in dias[i]:
+        calorias[i] += dias[i][a]*float(tabela[a][1])/float(tabela[a][0])
+        
+print (calorias)
