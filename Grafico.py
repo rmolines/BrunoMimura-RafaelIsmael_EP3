@@ -6,6 +6,7 @@ Created on Mon Apr 20 11:49:13 2015
 """
 
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 def Grafico (X,Y1,Y2,eixoX,eixoY1,eixoY2):
     
@@ -21,6 +22,10 @@ def Grafico (X,Y1,Y2,eixoX,eixoY1,eixoY2):
     ax2.set_ylabel(eixoY2, color='r')
     for tl in ax2.get_yticklabels():
         tl.set_color('r')
-    plt.show()    
+    plt.show() 
+    
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+    plt.gcf().autofmt_xdate()
     
     return None
