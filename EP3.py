@@ -5,9 +5,8 @@ Created on Sat Apr 18 18:08:37 2015
 @author: Rafael
 """
 
-from Grafico import Grafico
+from Grafico import Grafico, Grafico2
 from CalculaTMB import CalculaTMB
-import datetime as dt
 
 
 alimentos = open ("alimentos.csv", encoding = "latin-1")
@@ -63,8 +62,8 @@ def CalculaNutriente (nutriente, p):
 calorias = [0]*2
 CalculaNutriente (calorias, 'Calorias (kcal)') 
 
-proteina = [0]*2
-CalculaNutriente (proteina, 'Prote\x92nas (g)')
+proteinas = [0]*2
+CalculaNutriente (proteinas, 'Prote\x92nas (g)')
 
 carbs = [0]*2
 CalculaNutriente (carbs, 'Carboidratos (g)')
@@ -77,9 +76,15 @@ TMB = [CalculaTMB (peso, altura, idade, atividade, sexo)]*len(dias)
 
     
 datas = [d for d in  sorted(dias)]
-x = [dt.datetime.strptime(d,'%d/%m/%y').date() for d in datas]
 
-Grafico (x, calorias, TMB, 'Dias', 'Calorias Consumidas', 'Calorias Recomendadas')
+
+Grafico (calorias, TMB, 'Dias', 'Calorias Consumidas', 'Calorias Recomendadas', datas)
+
+Grafico2 (proteinas, 'Dias', 'Proteinas Consumidas', datas, 'Proteinas', ' Diarias')
+
+Grafico2 (carbs, 'Dias', 'Carboidratos Consumidos', datas, 'Carboidratos', ' Diarias')
+
+Grafico2 (fat, 'Dias', 'Gorduras Consumidas', datas, 'Gorduras', ' Diarias')
 
 
 IMC = 1.3*peso/altura**2.5
@@ -90,7 +95,3 @@ IMC = 1.3*peso/altura**2.5
 txt = open ('IMC.txt', 'w')
 txt.write (str (IMC))
 txt.close ()
-
-
-
-
