@@ -13,7 +13,6 @@ alimentos = open ("alimentos.csv", encoding = "latin-1")
 
 tabela = {}
 
-
 for i in alimentos.readlines():
     x = i.strip ().split (",")
     tabela [x[0]] = x[1:]   
@@ -51,6 +50,7 @@ for i in alimentacao:
             
            
 def CalculaNutriente (nutriente, p):
+
     n = tabela['Alimento'].index (p)
     x = 0
     for i in sorted(dias):
@@ -59,23 +59,61 @@ def CalculaNutriente (nutriente, p):
         x += 1
     
     
-calorias = [0]*2
+calorias = [0]*len(list(dias))
 CalculaNutriente (calorias, 'Calorias (kcal)') 
 
-proteinas = [0]*2
+proteinas = [0]*len(list(dias))
 CalculaNutriente (proteinas, 'Prote\x92nas (g)')
 
-carbs = [0]*2
+carbs = [0]*len(list(dias))
 CalculaNutriente (carbs, 'Carboidratos (g)')
 
-fat = [0]*2
+fat = [0]*len(list(dias))
 CalculaNutriente (fat, 'Gorduras (g)')       
         
 
 TMB = [CalculaTMB (peso, altura, idade, atividade, sexo)]*len(dias)
 
     
-datas = [d for d in  sorted(dias)]
+datas = [d for d in sorted(dias)]
+
+
+IMC = 1.3*peso/altura**2.5
+
+txt = open ('IMC.txt', 'w')
+txt.write ('Seu Índice de Massa Corporal é %i.\n' %IMC)
+if IMC < 17:
+    d = 'muito abaixo do peso ideal.'
+elif IMC < 18:
+    d = 'abaixo do peso ideal'
+elif IMC < 25:
+    d = 'no peso ideal'
+elif IMC < 30:
+    d = 'acima do peso ideal'
+elif IMC < 35:
+    d = 'com obesidade I'
+elif IMC < 40:
+    d = 'com obesidade II (severa)'
+else:
+    d = 'com obesidade III  (mórbida)'
+txt.write ('Você está ')
+txt.write (d)
+txt.write ('.\n')
+z = 0
+
+for i in sorted (dias):
+    txt.write ('No dia ')
+    txt.write (i)
+    txt.write (' você comeu ')
+    if calorias[z]-TMB[0] < 0:
+        w = TMB[0]-calorias[z]
+        txt.write ('%d a menos do que o ideal.\n' %w)
+    else:
+        w = calorias[z]-TMB[0]
+        txt.write ('%d a mais do que o ideal.\n' %w)
+    z+=1
+
+txt.close ()
 
 
 Grafico (calorias, TMB, 'Dias', 'Calorias Consumidas', 'Calorias Recomendadas', datas)
@@ -85,13 +123,3 @@ Grafico2 (proteinas, 'Dias', 'Proteinas Consumidas', datas, 'Proteinas', ' Diari
 Grafico2 (carbs, 'Dias', 'Carboidratos Consumidos', datas, 'Carboidratos', ' Diarias')
 
 Grafico2 (fat, 'Dias', 'Gorduras Consumidas', datas, 'Gorduras', ' Diarias')
-
-
-IMC = 1.3*peso/altura**2.5
-
-18,5 - 24,9
-29,9
-
-txt = open ('IMC.txt', 'w')
-txt.write (str (IMC))
-txt.close ()
