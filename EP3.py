@@ -7,6 +7,8 @@ Created on Sat Apr 18 18:08:37 2015
 
 from Grafico import Grafico
 from CalculaTMB import CalculaTMB
+import datetime as dt
+
 
 alimentos = open ("alimentos.csv", encoding = "latin-1")
 
@@ -56,13 +58,14 @@ for i in sorted(dias):
     for a in dias[i]:
         calorias[i] += dias[i][a]*float(tabela[a][1])/float(tabela[a][0])
 
-TMB = [CalculaTMB (peso, altura, idade, atividade, sexo)]*len(list(dias))
+TMB = [CalculaTMB (peso, altura, idade, atividade, sexo)]*len(dias)
 
-c = []
-
-for i in calorias:
-    c.append (calorias[i])
+c = [calorias[i] for i in calorias]
     
-      
+datas = [d for d in  sorted(dias)]
+x = [dt.datetime.strptime(d,'%d/%m/%y').date() for d in datas]
 
-print (len (dias))       
+Grafico (x, c, TMB, 'Dias', 'Calorias Consumidas', 'Calorias Recomendadas')  
+  
+
+
