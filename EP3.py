@@ -34,7 +34,6 @@ atividade = info [5].upper ().strip ()
 
 alimentacao = u [3:]
 
-
 dias = {}
 
 for i in alimentacao:
@@ -50,22 +49,48 @@ for i in alimentacao:
             dias[dia][comida] += qtd
         else:
             dias [dia][comida] = qtd
+            
+           
+def CalculaNutriente (nutriente, p):
+    n = tabela['Alimento'].index (p)
+    x = 0
+    for i in sorted(dias):
+        for a in dias[i]:
+            nutriente[x] += (dias[i][a]*float(tabela[a][n])/float(tabela[a][0]))
+        x += 1
+    
+    
+calorias = [0]*2
+CalculaNutriente (calorias, 'Calorias (kcal)') 
 
-calorias = {}
+proteina = [0]*2
+CalculaNutriente (proteina, 'Prote\x92nas (g)')
 
-for i in sorted(dias):
-    calorias[i] = 0
-    for a in dias[i]:
-        calorias[i] += dias[i][a]*float(tabela[a][1])/float(tabela[a][0])
+carbs = [0]*2
+CalculaNutriente (carbs, 'Carboidratos (g)')
+
+fat = [0]*2
+CalculaNutriente (fat, 'Gorduras (g)')       
+        
 
 TMB = [CalculaTMB (peso, altura, idade, atividade, sexo)]*len(dias)
 
-c = [calorias[i] for i in calorias]
     
 datas = [d for d in  sorted(dias)]
 x = [dt.datetime.strptime(d,'%d/%m/%y').date() for d in datas]
 
-Grafico (x, c, TMB, 'Dias', 'Calorias Consumidas', 'Calorias Recomendadas')  
-  
+Grafico (x, calorias, TMB, 'Dias', 'Calorias Consumidas', 'Calorias Recomendadas')
+
+
+IMC = 1.3*peso/altura**2.5
+
+18,5 - 24,9
+29,9
+
+txt = open ('IMC.txt', 'w')
+txt.write (str (IMC))
+txt.close ()
+
+
 
 
