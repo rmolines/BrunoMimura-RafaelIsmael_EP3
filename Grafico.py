@@ -6,10 +6,9 @@ Created on Mon Apr 20 11:49:13 2015
 """
 
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import numpy as np
 
-def Grafico (Y1,Y2,eixoX,eixoY1,eixoY2, datas):
+def Grafico (Y1,Y2,eixoX,eixoY1,eixoY2, datas, x, y):
     index = np.arange(len(Y1))
     
     fig, ax1 = plt.subplots()
@@ -19,8 +18,8 @@ def Grafico (Y1,Y2,eixoX,eixoY1,eixoY2, datas):
     plt.bar(index + 0.35, Y2, 0.35, color='r', label=eixoY2)
     
     plt.xlabel(eixoX)
-    plt.ylabel('Calorias')
-    plt.title('Calorias diarias')
+    plt.ylabel(x)
+    plt.title(x+y)
     plt.xticks(index + 0.35, (datas))
     plt.legend()
     
