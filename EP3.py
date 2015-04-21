@@ -7,7 +7,7 @@ Created on Sat Apr 18 18:08:37 2015
 
 from Grafico import Grafico, Grafico2
 from CalculaTMB import CalculaTMB
-
+import doctest
 
 alimentos = open ("alimentos.csv", encoding = "latin-1")
 
@@ -50,6 +50,13 @@ for i in alimentacao:
             
            
 def CalculaNutriente (nutriente, p):
+    
+    """
+    >>> lista = [0,0]
+    >>> CalculaNutriente(lista, 'Carboidratos (g)')
+    >>> lista
+    [56.655, 114.72]
+    """
 
     n = tabela['Alimento'].index (p)
     x = 0
@@ -74,11 +81,12 @@ CalculaNutriente (fat, 'Gorduras (g)')
 
 TMB = [CalculaTMB (peso, altura, idade, atividade, sexo)]*len(dias)
 
-    
+   
 datas = [d for d in sorted(dias)]
 
 
 IMC = 1.3*peso/altura**2.5
+
 
 txt = open ('IMC.txt', 'w')
 txt.write ('Seu Índice de Massa Corporal é %i.\n' %IMC)
@@ -99,27 +107,41 @@ else:
 txt.write ('Você está ')
 txt.write (d)
 txt.write ('.\n')
+
 z = 0
+PR = [peso*1.8]*len(proteinas) 
 
 for i in sorted (dias):
     txt.write ('No dia ')
     txt.write (i)
     txt.write (' você comeu ')
+    
     if calorias[z]-TMB[0] < 0:
         w = TMB[0]-calorias[z]
-        txt.write ('%d a menos do que o ideal.\n' %w)
+        txt.write ('%d calorias (kcal) a menos do que o ideal e ' %w)
     else:
-        w = calorias[z]-TMB[0]
-        txt.write ('%d a mais do que o ideal.\n' %w)
+        w = calorias[z]-TMB[0] 
+        txt.write ('%d calorias (kcal) a mais do que o ideal e ' %w)
+    
+    if proteinas[z]-PR[0] < 0:
+        p = PR[0]-proteinas[z]
+        txt.write ('%d proteinas (g) a menos do que o ideal para o ganho de massa muscular.\n' %p)
+    else:
+        p = proteinas[z]-PR[0]
+        txt.write ('%d proteinas (g) a mais do que o ideal para o ganho de massa muscular.\n' %p)    
     z+=1
 
 txt.close ()
 
 
-Grafico (calorias, TMB, 'Dias', 'Calorias Consumidas', 'Calorias Recomendadas', datas)
+Grafico (calorias, TMB, 'Dias', 'Calorias Consumidas (kcal)', 'Calorias Recomendadas (kcal)', datas, 'Calorias', ' Diarias')
 
-Grafico2 (proteinas, 'Dias', 'Proteinas Consumidas', datas, 'Proteinas', ' Diarias')
+Grafico (proteinas, PR, 'Dias', 'Proteinas Consumidas (g)', 'Proteinas Recomendadas (g)', datas, 'Proteinas', ' Diarias')
 
-Grafico2 (carbs, 'Dias', 'Carboidratos Consumidos', datas, 'Carboidratos', ' Diarias')
+Grafico2 (carbs, 'Dias', 'Carboidratos Consumidos (g)', datas, 'Carboidratos', ' Diarias')
 
-Grafico2 (fat, 'Dias', 'Gorduras Consumidas', datas, 'Gorduras', ' Diarias')
+Grafico2 (fat, 'Dias', 'Gorduras Consumidas (g)', datas, 'Gorduras', ' Diarias')
+
+
+if __name__=="__main__":
+    doctest.testmod(verbose="True")
